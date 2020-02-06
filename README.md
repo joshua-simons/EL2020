@@ -6,7 +6,7 @@ This repository documents my class work and projects done for CPS342.
 Name: Henry Murillo
 Major: Computer Science
 
-ID: https://github.com/NO03432852
+ID: https://github.com/N03432852
 
 Year:Senior
 
