@@ -1,0 +1,34 @@
+#!/bin/bash
+
+get_stats()
+{
+	#file holding data scraped from webpage
+	dump_file="subreddit_stats.txt"
+
+	#scrapes the webpage and dumps the data into a .txt file
+	#curl transfers data to/from a network server
+	#-o writes the output to a file rather than stdout (the command line)
+	#-s tells curl to run in silent mode (doesn't display progress meter/errors)
+	curl -s -o $dump_file $subreddit_url
+
+	#strips the html formatting from the file
+	search_str="_3XFx6CfPlg-4Usgxm0gK8R"
+	#sed -i s/<[^>]*>//g' $dump_file
+	grep -c $search_str $dump_file
+}
+
+#prompts user for subreddit
+echo -n "Enter subreddit name (e.g. dankmemes): "
+read subreddit
+
+#appends name of subreddit to reddit url
+reddit_url="https://www.reddit.com/r/"
+subreddit_url="$reddit_url$subreddit/"
+
+#checks if subreddit exists. If not, prompts user for new subreddit
+if [[ $(wget $subreddit_url -O-) ]] 2>/dev/null
+then
+	get_stats
+else
+	echo "The webpage does not exist"
+fi
