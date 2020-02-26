@@ -1,33 +1,19 @@
-# EL2020
+# EL2020#
 
-<<<<<<< HEAD
-[Logo](https://www.newpaltz.edu/media/identity/logos/newpaltzlogo.jpg)
-=======
-https://www.newpaltz.edu/media/identity/logos/newpaltzlogo.jpg 
->>>>>>> 179d2d2408bee69e4a922a6caa1969e25f2d58b3
+![Logo](https://www.newpaltz.edu/media/identity/logos/newpaltzlogo.jpg)
 
-## This is an <h2> tag
- **Spring 2020 Embedded Linux Class**
+##< **Spring 2020 Embedded Linux Class**>##
 
 This repository documents my class work and projects done for _**CPS342.**_
 
-<<<<<<< HEAD
 1. **Personal Information:**
 	Name: *Haley Rosenblatt Niggl*
-	Major: *Computer Engineering*
-	ID:[N03381304](https://github.com/N03381304)
-	Year: *Senior*
-=======
-1. Personal Information:
 
-	Name: Haley Rosenblatt Niggl
-	
-	Major: Computer Engineering
-	
-	ID: https://github.com/N03381304
-	
-	Year: Senior
->>>>>>> 179d2d2408bee69e4a922a6caa1969e25f2d58b3
+	Major: *Computer Engineering*
+
+	ID:[N03381304](https://github.com/N03381304)
+
+	Year: *Senior*
 
 2. **Class Start Date:** Jan 22, 2020
 
