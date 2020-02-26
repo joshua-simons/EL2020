@@ -1,3 +1,1 @@
-# EL1998
-
-This is my (N03371595) class repository. All work here is mine, except otherwise noted.
+The program (subreddit_stats) is used to retrieve some basic information regarding any subreddit community. It first prompts the user for the name of a subreddit (must match the exact name as it is in the url of the subreddit). If the subreddit does not exist or has been spelled wrong, the program will let the user know. If it does exist, it then retrieves the about.json file from the web and sifts through it to find the desired information. Once found, it is then displayed to the user.
