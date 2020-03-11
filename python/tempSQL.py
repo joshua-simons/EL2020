@@ -31,7 +31,7 @@ Subject = "Alert!"
 server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
 
 #Connect to the database
-con = sqlite.connect('../log/tempLog.db')
+con = sql.connect('../log/tempLog.db')
 cur = con.cursor()
 
 #Set the initial checkbit to 0.  This will throw a warning when run, but will still work just fine
@@ -81,20 +81,26 @@ try:
 	#Send text message alert if temperature is out of range
 		if 68 <= float(tempF) <= 78:
 			eChk = 0
+			GPIO.output(redPin,False)
+			GPIO.output(greenPin,True)
 		else:
+			GPIO.output(greenPin,False)
 			alert(tempF)
+			oneBlink(redPin)
+
 		#if loop set for every 60 seconds
 		if time.time() - oldTime > 59:
-			tempF, hum = readDHT()
-			if not data:
-				time.sleep(5)
-				continue
+			tempF, humid = readDHT(tempPin)
+			print(tempF,humid)
 			#Defines and executes the sql query (templog is the table name in the .db)
-			query = "INSERT INTO templog (Date, Temperature, Humidity) VALUES ('{}', '{}', '{}');"
-			query = query.format(time.strftime("%Y-%m-%d %H:%M:%S"), tempF, humid)
-			cur.execute(query)
+			cur.execute('INSERT INTO tempLog values(?,?,?)', (time.strftime('%Y-%m-%d %H:%M:%S'),tempF,humid))
 			con.commit()
-			print(time.strftime("%Y-%m-%d %H:%M:%S")+" "+tempF+"*F "+humid+"%")
+			time.sleep(5)
+			table = con.execute("select * from tempLog limit 5")
+			os.system('clear')
+			print "%-30s %-20s %-20s" %("Date/Time", "Temp", "Humidity")
+			for row in table:
+				print "%-30s %20s %-20s" %(row[0], row[1], row[2])
 			oldTime = time.time()
 
 except KeyboardInterrupt:
