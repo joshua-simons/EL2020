@@ -11,12 +11,10 @@ import smtplib
 redPin = 27
 greenPin = 22
 tempPin = 17
-buttonPin = 26
-
-tempSensor = Adafruit_DHT.DHT22
 
 #Temp and Humidity Sensor
 tempSensor = Adafruit_DHT.DHT22
+
 #LED Variables---------------------------------------------------------------------------------------
 #Duration of each Blink
 blinkDur = .1
@@ -41,7 +39,6 @@ eChk = 0
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(redPin,GPIO.OUT)
 GPIO.setup(greenPin,GPIO.OUT)
-GPIO.setup(buttonPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def oneBlink(pin):
 	GPIO.output(pin,True)
@@ -78,7 +75,7 @@ tempF, hum = readDHT(tempPin)
 
 try:
 	while True:
-	#Send text message alert if temperature is out of range
+		#Send text message alert if temperature is out of range
 		if 68 <= float(tempF) <= 78:
 			eChk = 0
 			GPIO.output(redPin,False)
@@ -91,16 +88,17 @@ try:
 		#if loop set for every 60 seconds
 		if time.time() - oldTime > 59:
 			tempF, humid = readDHT(tempPin)
-			print(tempF,humid)
-			#Defines and executes the sql query (templog is the table name in the .db)
+#			print(tempF, humid)
+			#Defines and executes the sql query (tempLog is the table name in the .db)
 			cur.execute('INSERT INTO tempLog values(?,?,?)', (time.strftime('%Y-%m-%d %H:%M:%S'),tempF,humid))
 			con.commit()
-			time.sleep(5)
-			table = con.execute("select * from tempLog limit 5")
+#			time.sleep(5)
+
+			table = con.execute("select * from tempLog")
 			os.system('clear')
 			print "%-30s %-20s %-20s" %("Date/Time", "Temp", "Humidity")
 			for row in table:
-				print "%-30s %20s %-20s" %(row[0], row[1], row[2])
+				print "%-30s %-20s %-20s" %(row[0], row[1], row[2])
 			oldTime = time.time()
 
 except KeyboardInterrupt:
