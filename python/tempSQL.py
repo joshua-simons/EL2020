@@ -82,7 +82,7 @@ try:
 			GPIO.output(greenPin,True)
 		else:
 			GPIO.output(greenPin,False)
-			alert(tempF)
+#			alert(tempF)
 			oneBlink(redPin)
 
 		#if loop set for every 60 seconds
