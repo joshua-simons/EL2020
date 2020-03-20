@@ -1,11 +1,18 @@
-#Import Libraries
+#!/usr/bin/python
+#The Temperature reader uses the DHT22 sensor to read the temperature and humidity in the room once every 60 seconds, and 
+#write the data to an sqlite database.  It has a temperature range test where if the temperature is within range, it keeps a green
+#LED lit, and if the temperature is out of range, a red LED blinks, and a text message is sent to the user,
+#alerting them to the temperature condition.
+#This was written for Joshua Simons's Embedded Linux Class at SUNY New Paltz 2020
+#And is licenses under the MIT Software License
+
+#Import libraries as needed
 import RPi.GPIO as GPIO
 import Adafruit_DHT
 import time
 import os
 import sqlite3 as sql
 import smtplib
-
 
 #Globals
 redPin = 27
@@ -40,12 +47,14 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(redPin,GPIO.OUT)
 GPIO.setup(greenPin,GPIO.OUT)
 
+#Function to blink the red LED. onn/off duration is set by global blinkDur
 def oneBlink(pin):
 	GPIO.output(pin,True)
 	time.sleep(blinkDur)
 	GPIO.output(pin,False)
 	time.sleep(blinkDur)
 
+#Function to alert the user via text/email (text uses email to sms gateway)
 def alert(tempF):
 	global eChk
 	if eChk == 0:
@@ -55,7 +64,8 @@ def alert(tempF):
 		server.sendmail(eFROM, eTO, eMessage)
 		server.quit
 		eChk = 1
-
+#Function to read the Temperature and humidity off of the DHT sednsor and return it.
+#Temperature is converted to Fahrenheit
 def readDHT(tempPin):
 	humidity, temperature = Adafruit_DHT.read_retry(tempSensor, tempPin)
 	temperature = temperature * 9/5.0 +32
@@ -76,29 +86,23 @@ tempF, hum = readDHT(tempPin)
 try:
 	while True:
 		#Send text message alert if temperature is out of range
-		if 68 <= float(tempF) <= 78:
+		if 60 <= float(tempF) <= 70:
 			eChk = 0
 			GPIO.output(redPin,False)
 			GPIO.output(greenPin,True)
 		else:
 			GPIO.output(greenPin,False)
-			alert(tempF)
+#			alert(tempF)
 			oneBlink(redPin)
 
 		#if loop set for every 60 seconds
 		if time.time() - oldTime > 59:
 			tempF, humid = readDHT(tempPin)
-#			print(tempF, humid)
+
 			#Defines and executes the sql query (tempLog is the table name in the .db)
 			cur.execute('INSERT INTO tempLog values(?,?,?)', (time.strftime('%Y-%m-%d %H:%M:%S'),tempF,humid))
 			con.commit()
-#			time.sleep(5)
-
-			table = con.execute("select * from tempLog")
-			os.system('clear')
-			print "%-30s %-20s %-20s" %("Date/Time", "Temp", "Humidity")
-			for row in table:
-				print "%-30s %-20s %-20s" %(row[0], row[1], row[2])
+			print("Temp and Humidity Read and Logged "+time.strftime('%Y-%m-%d %H:%M:%S'))
 			oldTime = time.time()
 
 except KeyboardInterrupt:
