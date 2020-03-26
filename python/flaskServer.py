@@ -14,8 +14,6 @@ import sqlite3 as sql
 import json
 
 #Globals
-con = sql.connect('../log/tempLog.db')
-cur = con.cursor()
 app = Flask(__name__)
 
 @app.route("/")
@@ -24,6 +22,8 @@ def index():
 
 @app.route("/sqlData")
 def chartData():
+	con = sql.connect('../log/tempLog.db')
+	cur = con.cursor()
 	con.row_factory = sql.Row
 	cur.execute("SELECT Date, Temperature FROM tempLog WHERE Temperature > 60")
 	dataset = cur.fetchall()
@@ -34,4 +34,4 @@ def chartData():
 	return Response(json.dumps(chartData), mimetype='application/json')
 
 if __name__ == "__main__":
-	app.run(host='0.0.0.0', port=2020, debug=True, use_reloader=False)
+	app.run(host='0.0.0.0', port=2020, debug=True)
