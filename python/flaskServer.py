@@ -25,7 +25,7 @@ def index():
 @app.route("/sqlData")
 def chartData():
 	con.row_factory = sql.Row
-	cur.execute("SELECT * FROM tempLog")
+	cur.execute("SELECT Date, Temperature FROM tempLog WHERE Temperature > 60")
 	dataset = cur.fetchall()
 	print (dataset)
 	chartData = []
