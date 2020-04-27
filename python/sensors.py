@@ -2,7 +2,7 @@
 """This is a program written to test and utilize the various sensors included in the CJRSLRB 16pcs/lots, 
 and the KOOKYE 16 in 1 Smart Home Sensor Modules kits sold on Amazon.  
 
-Each sensor interaction will be written as a class, and methods within theat class will be documented.
+Each sensor interaction will be written as a class, and methods within that class will be documented.
 
 Written by Joshua Simons 2020 joshua.a.simons@gmail.com
 
