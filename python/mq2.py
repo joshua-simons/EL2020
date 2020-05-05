@@ -10,7 +10,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(smokePin,GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 def action(pin):
-	print('Sensor detected action!')
+	print('Smoke detected!')
 	return
 
 #These two lines use changes to the presented voltage to GPIO 17 to trigger an event.  
@@ -22,7 +22,7 @@ GPIO.add_event_callback(smokePin, action)
 #Sets a while look, checking the sensor every .5 seconds.
 try:
 	while True:
-		print('alive')
+		print('active')
 		time.sleep(0.5)
 
 except KeyboardInterrupt:
